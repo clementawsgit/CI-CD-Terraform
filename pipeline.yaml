@@ -1,0 +1,59 @@
+version: 1.0
+metadata:
+  pipeline:
+    name: CreateEC2FromGitHub
+    region: us-east-1
+    roleArn: "arn:aws:iam::418295695531:role/my-iam" # Replace with your CodePipeline service role ARN
+stages:
+  - name: Source
+    actions:
+      - name: CheckoutGitHubRepo
+        actionTypeId:
+          category: Source
+          owner: AWS
+          provider: GitHub
+          version: "1"
+        configuration:
+          Owner: "clementawsgit"
+          Repo: "https://github.com/clementawsgit/CI-CD-Terraform.git"
+          Branch: "main"
+          OAuthToken: "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"
+        outputArtifacts:
+          - Name: TerraformSource
+
+  - name: Plan
+    actions:
+      - name: TerraformPlan
+        actionTypeId:
+          category: Build
+          owner: AWS
+          provider: CodeBuild
+          version: "1"
+        inputArtifacts:
+          - Name: TerraformSource
+        outputArtifacts:
+          - Name: TerraformPlanOutput
+        configuration:
+          ProjectName: "TerraformPlanProject" # Replace with your CodeBuild project name
+          EnvironmentVariables: # Optional: Pass variables to CodeBuild
+            - Name: AWS_REGION
+              Value: "us-east-1" # Ensure consistency with your provider region
+            # You can add other environment variables if needed
+
+  - name: Apply
+    actions:
+      - name: TerraformApply
+        actionTypeId:
+          category: Build
+          owner: AWS
+          provider: CodeBuild
+          version: "1"
+        inputArtifacts:
+          - Name: TerraformSource
+          - Name: TerraformPlanOutput # Optional, but can be used for confirmation
+        configuration:
+          ProjectName: "TerraformApplyProject" # Replace with your CodeBuild project name
+          EnvironmentVariables: # Optional: Pass variables to CodeBuild
+            - Name: AWS_REGION
+              Value: "us-east-1"
+         
