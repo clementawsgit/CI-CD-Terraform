@@ -20,7 +20,7 @@ resource "aws_instance" "myec" {
   instance_type = "t2.micro"
   key_name      = "linux"
   tags = {
-    Name = "clement-vm"
+    Name = "clement-vm2"
   }
 }
 
@@ -28,36 +28,12 @@ resource "aws_instance" "myec" {
 resource "aws_vpc" "myvpc" {
   cidr_block = "10.0.0.0/16"
   tags = {
-    Name = "clementvpc"
+    Name = "clementvpc2"
   }
 }
 
 #defining s3 bucket
 resource "aws_s3_bucket" "mys3bucket" {
-  bucket = "sgre1405bkt"
+  bucket = "sgre1405bkt2"
 }
 
-#defining security group
-resource "aws_security_group" "allow_ssh" {
-  name        = "allow_ssh"
-  description = "allows incoming ssh traffic"
-  vpc_id      = "vpc-083bd5085ee1b2149"
-
-  ingress {
-    from_port   = "22"
-    to_port     = "22"
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = "0"
-    to_port     = "0"
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "clem-ssh-sg"
-  }
-}
