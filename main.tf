@@ -32,8 +32,3 @@ resource "aws_vpc" "myvpc" {
   }
 }
 
-#defining s3 bucket
-resource "aws_s3_bucket" "mys3bucket" {
-  bucket = "sgre1405bkt2"
-}
-
