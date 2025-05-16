@@ -9,9 +9,6 @@ terraform {
 
 provider "aws" {
   region = var.aws_region
-  # In a real CI/CD pipeline, AWS credentials would be managed
-  # through IAM roles assigned to the CodePipeline service role.
-  # Avoid hardcoding credentials here or in tfvars for production.
 }
 
 resource "aws_instance" "cicd_ec2" {
