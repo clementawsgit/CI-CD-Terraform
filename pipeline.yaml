@@ -11,10 +11,10 @@ stages:
         actionTypeId:
           category: Source
           owner: AWS
-          provider: CodeCommit # Or GitHub, S3, etc.
+          provider: GitHub
           version: "1"
         configuration:
-          RepositoryName: "your-terraform-repo" # Replace with your repository name
+          RepositoryName: "CI-CD-Terraform" # Replace with your repository name
           BranchName: "main" # Or your desired branch
         outputArtifacts:
           - Name: TerraformSource
@@ -25,14 +25,14 @@ stages:
         actionTypeId:
           category: Build
           owner: AWS
-          provider: CodeBuild
+          provider: GitHub
           version: "1"
         inputArtifacts:
           - Name: TerraformSource
         outputArtifacts:
           - Name: TerraformPlanOutput
         configuration:
-          ProjectName: "MyWebApp" # Replace with your CodeBuild project name
+          ProjectName: "CI-CD-Terraform" # Replace with your CodeBuild project name
 
   - name: Apply
     actions:
@@ -40,10 +40,10 @@ stages:
         actionTypeId:
           category: Build
           owner: AWS
-          provider: CodeBuild
+          provider: GitHub
           version: "1"
         inputArtifacts:
           - Name: TerraformSource
           - Name: TerraformPlanOutput # Optional, but can be used for confirmation
         configuration:
-          ProjectName: "MyWebApp" # Replace with your CodeBuild project name
+          ProjectName: "CI-CD-Terraform" # Replace with your CodeBuild project name
