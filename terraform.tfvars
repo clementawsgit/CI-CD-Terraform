@@ -9,7 +9,7 @@ instance_name = "my-cicd-ec2"
 
 # Network Configuration (replace with your actual VPC and Subnet IDs)
 vpc_id      = "vpc-083bd5085ee1b2149"
-subnet_id   = "subnet-07b99d4dc448a136f" "subnet-03c38f2a9acae467f" "subnet-017854fdc4ba050f7"
+subnet_id   = "subnet-07b99d4dc448a136f"
 
 # Security Group Configuration
 ssh_cidr_blocks = ["0.0.0.0/0"] # Be very cautious with 0.0.0.0/0 in production; restrict IPs
