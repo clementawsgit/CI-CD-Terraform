@@ -1,0 +1,18 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo Installing Terraform...
+      - curl -s -o terraform.zip https://releases.hashicorp.com/terraform/1.5.0/terraform_1.5.0_linux_amd64.zip
+      - unzip terraform.zip && mv terraform /usr/local/bin/
+  pre_build:
+    commands:
+      - cd terraform
+      - terraform init
+  build:
+    commands:
+      - terraform plan -var="bucket_name=my-ci-cd-terraform-bucket"
+  post_build:
+    commands:
+      - terraform apply -auto-approve -var="bucket_name=my-ci-cd-terraform-bucket"
