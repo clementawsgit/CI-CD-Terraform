@@ -1,0 +1,58 @@
+name: Terraform EC2 Deployment
+
+on:
+  push:
+    branches:
+      - main # Trigger on pushes to the main branch
+
+jobs:
+  terraform:
+    name: Terraform
+    runs-on: ubuntu-latest
+    environment: production # Define your environment
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }} # e.g., ap-southeast-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ">= 1.0.0"
+
+      - name: Terraform Init
+        id: init
+        run: terraform init -backend-config="bucket=${{ secrets.TF_STATE_BUCKET }}" -backend-config="key=ec2/terraform.tfstate" -backend-config="dynamodb_table=${{ secrets.TF_STATE_TABLE }}"
+        env:
+          TF_STATE_BUCKET: your-terraform-state-bucket-name # Store as GitHub Secret
+          TF_STATE_TABLE: your-terraform-state-locking-table-name # Store as GitHub Secret
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color -input=false -out=tfplan
+        continue-on-error: true
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && steps.validate.outcome == 'success' && steps.plan.outcome != 'failure'
+        run: terraform apply -auto-approve -input=false tfplan
+        env:
+          TF_VAR_ec2_ami: ${{ secrets.EC2_AMI }} # Store as GitHub Secret
+          TF_VAR_ec2_key_pair: ${{ secrets.EC2_KEY_PAIR }} # Store as GitHub Secret
+          TF_VAR_subnet_id: ${{ secrets.SUBNET_ID }} # Store as GitHub Secret
+          TF_VAR_vpc_id: ${{ secrets.VPC_ID }} # Store as GitHub Secret
+          TF_VAR_environment: production # Or based on branch/event
+
+      - name: Output Public IP
+        if: github.ref == 'refs/heads/main' && steps.apply.outcome == 'success'
+        run: echo "EC2 Public IP: ${{ steps.apply.outputs.instance_public_ip }}"
