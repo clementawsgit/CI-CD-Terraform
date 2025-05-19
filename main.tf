@@ -7,10 +7,9 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "your-terraform-state-bucket-name" # Replace with your S3 bucket name
+    bucket = "awsbuck19may2025"
     key    = "ec2/terraform.tfstate"
-    dynamodb_table = "your-terraform-state-locking-table-name" # Replace with your DynamoDB table name
-    region = "ap-southeast-1" # Assuming Singapore region
+    region = "us-east-1"
   }
 }
 
