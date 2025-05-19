@@ -6,7 +6,7 @@ variable "aws_region" {
 
 variable "ec2_ami" {
   type        = string
-  description = "ami-0953476d60561c955"
+  description = "ami-084568db4383264d4"
 }
 
 variable "ec2_instance_type" {
@@ -17,7 +17,7 @@ variable "ec2_instance_type" {
 
 variable "ec2_key_pair" {
   type        = string
-  description = "linux"
+  description = "ubuntu"
 }
 
 variable "subnet_id" {
