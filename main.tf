@@ -19,7 +19,6 @@ resource "aws_instance" "myec2" {
   ami           = "ami-0953476d60561c955"
   instance_type = "t2.micro"
   key_name      = "linux"
-  count = "1"
 
   tags = {
     Name = "Clement-TF"
