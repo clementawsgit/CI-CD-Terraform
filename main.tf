@@ -24,22 +24,3 @@ resource "aws_instance" "myec2" {
     Name = "Myproject"
   }
 }
-
-# Create a Bucket
-resource "aws_s3_bucket" "example" {
-  bucket = "clemobucket2025"
-
-  tags = {
-    Name        = "My bucket"
-    Environment = "Dev"
-  }
-}
-
-# Create a VPC
-resource "aws_vpc" "main" {
- cidr_block = "10.0.0.0/16"
- 
- tags = {
-   Name = "Myproject"
- }
-}
