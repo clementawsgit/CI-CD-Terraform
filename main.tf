@@ -5,53 +5,22 @@ terraform {
       version = "~> 5.0"
     }
   }
-
-  backend "s3" {
-    bucket = "awsbuck19may2025"
-    key    = "ec2/terraform.tfstate"
-    region = "us-east-1"
-  }
 }
+
 
 provider "aws" {
-  region = var.aws_region
+  region     = "us-east-1"
+  access_key = "AKIAWCZC5ZCV5EQLQF5J"
+  secret_key = "LRUl/bAOKyqS3Q7SXvbfzCa4k+cw2D8U8SsEZGH5"
 }
 
-resource "aws_instance" "example" {
-  ami           = var.ec2_ami
-  instance_type = var.ec2_instance_type
-  key_name      = var.ec2_key_pair
-  vpc_security_group_ids = [aws_security_group.instance.id]
-  subnet_id     = var.subnet_id # Ensure you have a subnet ID
-
-  tags = {
-    Name        = var.ec2_tag_name
-    Environment = var.environment
-    DeployedBy  = "Terraform-CI-CD"
-  }
-}
-
-resource "aws_security_group" "instance" {
-  name_prefix = "ec2-instance-sg-"
-  vpc_id      = var.vpc_id # Ensure you have a VPC ID
-
-  ingress {
-    from_port   = var.ingress_port
-    to_port     = var.ingress_port
-    protocol    = "tcp"
-    cidr_blocks = var.ingress_cidr_blocks
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name        = "EC2 Instance Security Group"
-    Environment = var.environment
-    DeployedBy  = "Terraform-CI-CD"
-  }
+# Create a EC
+resource "aws_instance" "myec2" {
+    ami = "ami-0953476d60561c955"
+    instance_type = "t2.micro"
+    key_name = "linux"
+    
+    tags = {
+        Name = "Myproject_server_TF"
+    }
 }
