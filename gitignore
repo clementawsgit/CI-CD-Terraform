@@ -1,0 +1,43 @@
+# Terraform generated files
+.terraform/           # Terraform working directory, contains provider plugins and modules
+.terraform.lock.hcl   # Dependency lock file (though often you might want to commit this for consistent builds)
+
+# Terraform state files - CRITICAL to ignore if using local state
+# If you are using a remote backend (like S3), these won't be created,
+# but it's still good practice to include them for safety.
+*.tfstate
+*.tfstate.*
+terraform.tfstate
+terraform.tfstate.backup
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Terraform plan files
+*.tfplan
+*.tfplan.backup
+
+# Configuration files
+.terraformrc
+terraform.rc
+
+# sensitive variable files (e.g., for local testing)
+# NEVER commit files with actual credentials or sensitive data!
+# You should manage sensitive data through environment variables, AWS Secrets Manager,
+# or a secrets management solution like HashiCorp Vault.
+# Examples of files you might create locally but NOT commit:
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+
+# Providers' cache
+.terraform/providers/
+
+# Editor-specific files (common ones)
+.vscode/
+.idea/
+*.swp
+*.bak
+*~
