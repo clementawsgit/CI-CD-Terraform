@@ -10,8 +10,8 @@ terraform {
 
 provider "aws" {
   region     = "us-east-1"
-  access_key = "AKIAWCZC5ZCV5EQLQF5J"
-  secret_key = "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"
+  access_key = "AKIAWCZC5ZCVVCCE4E7X"
+  secret_key = "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"
 }
 
 # Create a EC
@@ -21,6 +21,6 @@ resource "aws_instance" "myec2" {
   key_name      = "linux"
 
   tags = {
-    Name = "Myproject_server_TF"
+    Name = "MyProject-Server"
   }
 }
