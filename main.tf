@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     aws = {
-      source  = "hashicorp/aws"
+      source  = "https://github.com/clementawsgit/CI-CD-Terraform.git"
       version = "~> 5.0"
     }
   }
